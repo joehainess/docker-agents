@@ -35,6 +35,9 @@ RUN mkdir build \
   && chown -R build:build /build \
   && chmod -R 0755 /build
 
+# Add user to docker group
+RUN usermod -a -G systemd-network,docker build
+
 USER build:build
 WORKDIR /build
 
