@@ -1,10 +1,14 @@
-FROM ubuntu:noble
+ARG ARCH=linux/amd64
+FROM --platform=${ARCH} ubuntu:noble
+
+SHELL [ "/bin/bash", "-c" ]
 
 LABEL name=docker-builder
 LABEL version=1.0.0
 
-SHELL [ "/bin/bash", "-c" ]
+ARG NODE_VERSION=22
 
+# Install required packages
 RUN apt-get update \
   && apt-get -y install curl git jq
 
@@ -23,22 +27,17 @@ RUN apt-get update \
 # Set docker gid to 500
 RUN sed -i 's/^docker:x:.*:/docker:x:500:/' /etc/group
 
-ARG NODE_VERSION=22
-
-# Remove default user with uid:gid 1000
-RUN deluser --remove-home ubuntu
-
-# Create build user with uid:gid 1000
-RUN mkdir build \
-  && groupadd -g 1000 build \
-  && useradd -m -d /build -u 1000 -g 1000 build \
-  && chown -R build:build /build \
-  && chmod -R 0755 /build
+# Remove user ubuntu
+RUN userdel ubuntu
+# Create build user
+RUN mkdir -p /build \
+    && chown -R 1000:1000 /build \
+    && useradd -u 1000 -d /build build
 
 # Add user to docker group
 RUN usermod -a -G docker build
 
-USER build:build
+USER build
 WORKDIR /build
 
 # Create a script file sourced by both interactive and non-interactive bash shells
