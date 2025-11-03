@@ -4,7 +4,7 @@ FROM --platform=${ARCH} ubuntu:noble
 SHELL [ "/bin/bash", "-c" ]
 
 LABEL name=npm-builder
-LABEL version=0.0.0
+LABEL version=0.0.1
 
 # Install required packages
 RUN apt-get update \
