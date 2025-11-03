@@ -12,16 +12,16 @@ RUN apt-get update \
 RUN install -m 0755 -d /etc/apt/keyrings \
     && curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc \
     && chmod a+r /etc/apt/keyrings/docker.asc
-
 # Add the Docker repository to Apt sources:
 RUN echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-# Install Docker packages
+# Install Docker
 RUN apt-get update \
     && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# Set docker gid to 500
+RUN sed -i 's/^docker:x:.*:/docker:x:500:/' /etc/group
 
 ARG NODE_VERSION=22
 
@@ -36,7 +36,7 @@ RUN mkdir build \
   && chmod -R 0755 /build
 
 # Add user to docker group
-RUN usermod -a -G systemd-network,docker build
+RUN usermod -a -G docker build
 
 USER build:build
 WORKDIR /build
