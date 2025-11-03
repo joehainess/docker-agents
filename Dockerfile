@@ -33,4 +33,4 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | P
 RUN echo node > .nvmrc
 RUN nvm install $NODE_VERSION
 
-ENTRYPOINT [ "/bin/bash" ]
+CMD [ "/bin/bash" ]
