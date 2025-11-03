@@ -1,7 +1,7 @@
 FROM ubuntu:noble
 
 LABEL name=docker-builder
-LABEL version=0.0.0
+LABEL version=0.0.1
 
 SHELL [ "/bin/bash", "-c" ]
 
@@ -10,8 +10,13 @@ RUN apt-get update \
 
 ARG NODE_VERSION=22
 
+# Remove default user with uid:gid 1000
+RUN deluser --remove-home ubuntu
+
+# Create build user with uid:gid 1000
 RUN mkdir build \
-  && useradd -m -d /build build \
+  && groupadd -g 1000 build \
+  && useradd -m -d /build -u 1000 -g 1000 build \
   && chown -R build:build /build \
   && chmod -R 0755 /build
 
