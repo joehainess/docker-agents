@@ -1,7 +1,7 @@
 FROM ubuntu:noble
 
 LABEL name=docker-builder
-LABEL version=0.0.3
+LABEL version=0.0.4
 
 SHELL [ "/bin/bash", "-c" ]
 
