@@ -6,8 +6,6 @@ SHELL [ "/bin/bash", "-c" ]
 LABEL name=docker-builder
 LABEL version=1.0.1
 
-ARG NODE_VERSION=22
-
 # Install required packages
 RUN apt-get update \
   && apt-get -y install curl git jq
@@ -39,6 +37,13 @@ RUN usermod -a -G docker build
 
 USER build
 WORKDIR /build
+
+# Setup NVM & put node bin on PATH
+ARG NODE_VERSION=v22.21.1
+ENV HOME=/build
+ENV NVM_DIR=${HOME}/.nvm
+ENV NVM_BIN=${NVM_DIR}/versions/node/${NODE_VERSION}/bin
+ENV PATH=${PATH}:${NVM_BIN}
 
 # Create a script file sourced by both interactive and non-interactive bash shells
 ENV BASH_ENV .bash_env
