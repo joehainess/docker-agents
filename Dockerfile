@@ -4,7 +4,7 @@ FROM --platform=${ARCH} ubuntu:noble
 SHELL [ "/bin/bash", "-c" ]
 
 LABEL name=docker-builder
-LABEL version=1.0.0
+LABEL version=1.0.1
 
 ARG NODE_VERSION=22
 
