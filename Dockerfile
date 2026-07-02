@@ -4,7 +4,7 @@ FROM --platform=${ARCH} debian:trixie
 SHELL [ "/bin/bash", "-c" ]
 
 LABEL name=ansible-control-node
-LABEL version=0.0.2
+LABEL version=0.0.3
 
 # Install required packages
 RUN apt update \
