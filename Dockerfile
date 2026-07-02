@@ -8,7 +8,7 @@ LABEL version=0.0.2
 
 # Install required packages
 RUN apt update \
-  && apt -y install openssh-client python3 pipx curl \
+  && apt -y install openssh-client python3 pipx curl git \
   && apt clean
 
 # Install ansible globally via pipx
